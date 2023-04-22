@@ -9,21 +9,21 @@ export default function Posts() {
 			id: 1,
 			username:"itsyanoikris",
 			userImg: "/avatar.jpg",
-			img: faker.image.abstract(),
+			img: faker.image.fashion(),
 			caption: "Lorem ipsum dolor sit"
 		},
 		{
 			id: 2,
 			username:"itsyaboikris",
 			userImg: "/avatar.jpg",
-			img: faker.image.abstract(),
+			img: faker.image.nature(),
 			caption: "Lorem ipsum dolor sit"
 		},
 		{
 			id: 3,
 			username:"kris",
 			userImg: "/avatar.jpg",
-			img: faker.image.abstract(),
+			img: faker.image.nightlife(),
 			caption: "Lorem ipsum dolor sit"
 		},
 	]
@@ -32,7 +32,7 @@ export default function Posts() {
 		<div>
 			{
 				posts.map((post => (
-					<Post key ={post.id} id={post.id} username={post.username} userImg={post} img={post.img} caption={post.caption} />
+					<Post key ={post.id} id={post.id} username={post.username} userImg={post.userImg} img={post.img} caption={post.caption} />
 				)))
 			}
 		</div>
