@@ -11,10 +11,10 @@ export default function Header() {
 			<div className='flex items-center justify-between max-w-6xl mx-4 xl:mx-auto'>
 
 				<div className='cursor-pointer h-24 w-24 relative hidden lg:inline-grid' >
-					<Image src={`/Instagram_logo.png`} className='object-contain' alt='logo' fill />
+					<Image src={`/Instagram_logo.png`} className='object-contain' alt='logo' priority fill />
 				</div>
 				<div className='cursor-pointer h-24 w-10 relative lg:hidden' >
-					<Image src={`/instagram.png`} className='object-contain' alt='logo' fill />
+					<Image src={`/instagram.png`} className='object-contain' alt='logo' priority fill />
 				</div>
 
 				<div className="relative mt-1">
