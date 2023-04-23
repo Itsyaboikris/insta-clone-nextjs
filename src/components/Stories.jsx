@@ -11,7 +11,7 @@ export default function Stories() {
 		let storyUsers = []
 		for (let i = 0; i < 20; i++) {
 			storyUsers.push({
-				username: faker.name.fullName(),
+				username: faker.internet.userName(),
 				img : faker.image.avatar(), //`https://i.pravatar.cc/150?img=${Math.ceil(Math.random() * 70)}`,
 				id: i
 			})
