@@ -14,7 +14,7 @@ const firebaseConfig = {
 	messagingSenderId: process.env.MESSAGE_SENDER_ID,
 	appId: process.env.APP_ID
 };
-
+console.log(firebaseConfig)
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore()
