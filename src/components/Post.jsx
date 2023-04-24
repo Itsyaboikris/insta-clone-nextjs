@@ -1,7 +1,11 @@
 import React from 'react'
 import { EllipsisHorizontalIcon, FaceSmileIcon, HeartIcon, ChatBubbleOvalLeftIcon, BookmarkIcon } from '@heroicons/react/24/outline'
+import { useSession, signOut } from "next-auth/react"
 
 export default function Post({id, img, userImg, caption, username }) {
+	
+	const {data: session} = useSession()
+	
 	return (
 		<div className='bg-white my-7 border rounded-md'>
 			
@@ -13,24 +17,36 @@ export default function Post({id, img, userImg, caption, username }) {
 
 			<img className='object-cover w-full' src={img} alt="userpost" />
 
-			<div className='flex justify-between px-4 pt-4'>
-				<div className='flex space-x-4'>
-					<HeartIcon className="icon-btn" />
-					<ChatBubbleOvalLeftIcon className="icon-btn" />
-				</div>
-				<BookmarkIcon className="icon-btn" />
-			</div>
+			{
+				session && (
+					<div className='flex justify-between px-4 pt-4'>
+						<div className='flex space-x-4'>
+							<HeartIcon className="icon-btn" />
+							<ChatBubbleOvalLeftIcon className="icon-btn" />
+						</div>
+						<BookmarkIcon className="icon-btn" />
+					</div>
+				)
+			}
+
+			
 
 			<p className='p-5 truncate'>
 				<span className='font-bold mr-2 '>{username}</span>
 				{caption}
 			</p>
 
-			<form action='' className='flex items-center p-4'>
-				<FaceSmileIcon className='h-7'/>
-				<input className='border-none flex-1 focus:ring-0' type="text" placeholder='Enter yout comment...' />
-				<button className='text-blue-400 font-bold'>Post</button>
-			</form>
+			{
+				session && (
+					<form action='' className='flex items-center p-4'>
+						<FaceSmileIcon className='h-7'/>
+						<input className='border-none flex-1 focus:ring-0' type="text" placeholder='Enter yout comment...' />
+						<button className='text-blue-400 font-bold'>Post</button>
+					</form>
+				)
+			}
+
+			
 
 		</div>
 	)
