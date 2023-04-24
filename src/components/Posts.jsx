@@ -1,38 +1,26 @@
-import React from 'react'
-import { faker } from '@faker-js/faker';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 import Post from './Post';
+import { db, storage } from "../firebase"
 
 export default function Posts() {
 
-	const posts = [
-		{
-			id: 1,
-			username:"itsyanoikris",
-			userImg: "/avatar.jpg",
-			img: faker.image.fashion(),
-			caption: "Lorem ipsum dolor sit"
-		},
-		{
-			id: 2,
-			username:"itsyaboikris",
-			userImg: "/avatar.jpg",
-			img: faker.image.nature(),
-			caption: "Lorem ipsum dolor sit"
-		},
-		{
-			id: 3,
-			username:"kris",
-			userImg: "/avatar.jpg",
-			img: faker.image.nightlife(),
-			caption: "Lorem ipsum dolor sit"
-		},
-	]
+	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		const unsubscribe = onSnapshot(
+			query(collection(db,"posts"), orderBy("timestamp","desc")), (snapshot) => {
+				setPosts(snapshot.docs)
+			}
+		)
+		return unsubscribe
+	}, [])
 
 	return (
 		<div>
 			{
 				posts.map((post => (
-					<Post key ={post.id} id={post.id} username={post.username} userImg={post.userImg} img={post.img} caption={post.caption} />
+					<Post key ={post.id} id={post.id} username={post.data().username} userImg={post.data().profileImg} img={post.data().image} caption={post.data().caption} />
 				)))
 			}
 		</div>
