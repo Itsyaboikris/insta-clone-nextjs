@@ -1,7 +1,7 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import Post from './Post';
-import { db, storage } from "../firebase"
+import { db } from "../firebase"
 
 export default function Posts() {
 
@@ -14,7 +14,7 @@ export default function Posts() {
 			}
 		)
 		return unsubscribe
-	}, [])
+	}, [db])
 
 	return (
 		<div>
