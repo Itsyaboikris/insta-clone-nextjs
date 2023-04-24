@@ -101,6 +101,11 @@ export default function Post({id, img, userImg, caption, username }) {
 			
 
 			<p className='p-5 truncate'>
+				{
+					(likes.length > 0) && (
+						<p className='font-bold mb-1'>{likes.length} likes</p>
+					) 
+				}
 				<span className='font-bold mr-2 '>{username}</span>
 				{caption}
 			</p>
