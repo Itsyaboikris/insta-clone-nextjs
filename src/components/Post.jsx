@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { HeartIcon as FillHeartIcon} from '@heroicons/react/24/solid'
 import { EllipsisHorizontalIcon, FaceSmileIcon, HeartIcon, ChatBubbleOvalLeftIcon, BookmarkIcon } from '@heroicons/react/24/outline'
-import { useSession } from "next-auth/react"
 import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore'
 import { db } from "../firebase"
 import Moment from 'react-moment';
-import { async } from '@firebase/util'
+import { useRecoilState } from 'recoil'
+import { UserState } from '@/atoms/userAtom'
 
 export default function Post({id, img, userImg, caption, username }) {
 	
-	const {data: session} = useSession()
-
+	const [currentUser, setCurrentUser] = useRecoilState(UserState)
 
 	const [comment, setComment] = useState("")
 	const [comments, setComments] = useState([])
@@ -22,9 +21,6 @@ export default function Post({id, img, userImg, caption, username }) {
 		const unsubscribe = onSnapshot(
 			query(collection(db, "posts", id, "comments"), orderBy("timestamp","desc")), (snapshot) => {
 				setComments(snapshot.docs)
-				console.log("snapshot.docs")
-				console.log(snapshot.docs)
-				console.log("comments")
 				console.log(comments)
 			}
 		)
@@ -37,7 +33,7 @@ export default function Post({id, img, userImg, caption, username }) {
 
 	useEffect(() => {
 		setLiked (
-			likes.findIndex(like=>like.id === session?.user.uid) !== -1
+			likes.findIndex(like=>like.id === currentUser?.uid) !== -1
 		)
 	}, [likes])
 
@@ -49,8 +45,8 @@ export default function Post({id, img, userImg, caption, username }) {
 
 		await addDoc(collection(db, "posts", id , "comments"), {
 			comment: commentToSend,
-			username: session.user.username,
-			userImage: session.user.image,
+			username: currentUser.username,
+			userImage: currentUser.image,
 			timestamp: serverTimestamp()
 		})
 	}
@@ -58,10 +54,10 @@ export default function Post({id, img, userImg, caption, username }) {
 	async function likePost() {
 		
 		if(liked) {
-			await deleteDoc(doc(db, "posts", id, "likes", session.user.uid))
+			await deleteDoc(doc(db, "posts", id, "likes", currentUser.uid))
 		} else {
-			await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
-				username: session.user.username
+			await setDoc(doc(db, "posts", id, "likes", currentUser.uid), {
+				username: currentUser.username
 			})
 		}
 
@@ -80,7 +76,7 @@ export default function Post({id, img, userImg, caption, username }) {
 			<img className='object-cover w-full' src={img} alt="userpost" />
 
 			{
-				session && (
+				currentUser && (
 					<div className='flex justify-between px-4 pt-4'>
 						<div className='flex space-x-4'>
 
@@ -128,7 +124,7 @@ export default function Post({id, img, userImg, caption, username }) {
 			}
 
 			{
-				session && (
+				currentUser && (
 					<form action='' className='flex items-center p-4'>
 						<FaceSmileIcon className='h-7'/>
 						<input className='border-none flex-1 focus:ring-0' type="text" placeholder='Enter yout comment...' value={comment} onChange={(e)=>setComment(e.target.value)} />

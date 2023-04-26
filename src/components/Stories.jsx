@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { faker } from '@faker-js/faker';
 import Story from './Story'
-import { useSession, signOut } from "next-auth/react"
+import { UserState } from '@/atoms/userAtom';
+import { useRecoilState } from 'recoil';
 
 export default function Stories() {
 
-	const {data: session} = useSession()
+	const [currentUser, setCurrentUser] = useRecoilState(UserState)
 
 	const [storyUsers, setStoryUsers] = useState([])
 
@@ -27,8 +28,8 @@ export default function Stories() {
 	return (
 		<div className='flex space-x-2 p-6 bg-white mt-8 border-gray-200 border overflow-x-scroll rounded-sm scrollbar-none'>
 			{
-				session && (
-					<Story img={session.user.image} username={session.user.name} isUser="true"/>
+				currentUser && (
+					<Story img={currentUser.userImg} username={currentUser.username} isUser="true"/>
 				)
 			}
 			{
